@@ -40,11 +40,13 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Invalid distance" }, { status: 400 })
     }
 
+    // รับค่า fuelPrice และ fuelEfficiency จาก body (ถ้ามี) หรือใช้ default
+    const fuelPrice = body.fuelPrice ? Number(body.fuelPrice) : 35
+    const fuelEfficiency = body.fuelEfficiency ? Number(body.fuelEfficiency) : 30
+
     // TODO: แทน userId = 1 ด้วยการดึงจาก session หรือ token จริง ๆ
     const userId = 1
 
-    const fuelPrice = 35 // บาทต่อลิตร
-    const fuelEfficiency = 13 // กม./ลิตร
     const cost = (distance / fuelEfficiency) * fuelPrice
 
     const newTrip = await prisma.trip.create({
