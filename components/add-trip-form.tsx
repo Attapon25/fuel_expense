@@ -15,6 +15,9 @@ export default function AddTripForm({ onTripAdded }: AddTripFormProps) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
 
+  const [fuelPrice, setFuelPrice] = useState("35")
+const [fuelEfficiency, setFuelEfficiency] = useState("30")
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
@@ -24,7 +27,9 @@ export default function AddTripForm({ onTripAdded }: AddTripFormProps) {
       const response = await fetch("/api/trips", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ distance: Number.parseFloat(distance) }),
+        body: JSON.stringify({ distance: Number.parseFloat(distance),
+  fuelPrice: Number.parseFloat(fuelPrice),
+  fuelEfficiency: Number.parseFloat(fuelEfficiency), }),
       })
 
       if (response.ok) {
@@ -64,37 +69,63 @@ export default function AddTripForm({ onTripAdded }: AddTripFormProps) {
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-white/80 text-sm font-medium mb-2">Distance (km)</label>
-            <input
-              type="number"
-              value={distance}
-              onChange={(e) => setDistance(e.target.value)}
-              className="glass-input w-full"
-              placeholder="Enter distance in kilometers"
-              min="0.1"
-              step="0.1"
-              required
-            />
-            <p className="text-white/60 text-xs mt-1">
-              Cost will be calculated automatically (฿35/L, 13 km/L efficiency)
-            </p>
-          </div>
+  <div>
+    <label className="block text-white/80 text-sm font-medium mb-2">Distance (km)</label>
+    <input
+      type="number"
+      value={distance}
+      onChange={(e) => setDistance(e.target.value)}
+      className="glass-input w-full"
+      placeholder="Enter distance in kilometers"
+      min="0.1"
+      step="0.1"
+      required
+    />
+    <p className="text-white/60 text-xs mt-1">
+      Cost will be calculated automatically (฿35/L, 30 km/L efficiency)
+    </p>
+  </div>
 
-          {error && (
-            <div className="bg-red-500/20 border border-red-500/30 rounded-xl p-3">
-              <p className="text-red-200 text-sm">{error}</p>
-            </div>
-          )}
+  <div>
+    <label className="block text-white/80 text-sm font-medium mb-2">Fuel Price (฿/L)</label>
+    <input
+      type="number"
+      value={fuelPrice}
+      onChange={(e) => setFuelPrice(e.target.value)}
+      className="glass-input w-full"
+      placeholder="Enter fuel price per liter (default 35)"
+      min="0"
+      step="0.1"
+    />
+  </div>
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="glass-button w-full py-3 px-4 text-white font-medium disabled:opacity-50"
-          >
-            {loading ? "Adding Trip..." : "Add Trip"}
-          </button>
-        </form>
+  <div>
+    <label className="block text-white/80 text-sm font-medium mb-2">Fuel Efficiency (km/L)</label>
+    <input
+      type="number"
+      value={fuelEfficiency}
+      onChange={(e) => setFuelEfficiency(e.target.value)}
+      className="glass-input w-full"
+      placeholder="Enter fuel efficiency (default 30)"
+      min="0"
+      step="0.1"
+    />
+  </div>
+
+  {error && (
+    <div className="bg-red-500/20 border border-red-500/30 rounded-xl p-3">
+      <p className="text-red-200 text-sm">{error}</p>
+    </div>
+  )}
+
+  <button
+    type="submit"
+    disabled={loading}
+    className="glass-button w-full py-3 px-4 text-white font-medium disabled:opacity-50"
+  >
+    {loading ? "Adding Trip..." : "Add Trip"}
+  </button>
+</form>
       </div>
     </div>
   )
