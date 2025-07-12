@@ -63,7 +63,18 @@ export default function HomePage() {
         {/* Debt Display */}
         <DebtDisplay key={refreshKey} />
 
-        {/* Tab Navigation */}
+        {/* Tab Navigation */} 
+        <div className="glass-card p-1">
+          <div className="flex rounded-xl overflow-hidden">
+            <button
+
+              className={`flex-1 py-3 px-4 text-sm font-medium transition-all  text-white hover:text-white"
+                }`}
+            >
+              สร้าง QR ชำระเงิน
+            </button>
+          </div>
+        </div>
         <div className="glass-card p-2">
           <div className="flex rounded-xl overflow-hidden">
             <button
@@ -82,6 +93,7 @@ export default function HomePage() {
             </button>
           </div>
         </div>
+       
 
         {/* Content */}
         {activeTab === "trips" ? (
